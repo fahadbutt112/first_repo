@@ -8011,11 +8011,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/MvcRecipeApp.csproj",
+      "projectUniqueName": "/Users/FahadButt/Desktop/git_pull/first_repo/MvcRecipeApp.csproj",
       "projectName": "MvcRecipeApp",
-      "projectPath": "/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/MvcRecipeApp.csproj",
+      "projectPath": "/Users/FahadButt/Desktop/git_pull/first_repo/MvcRecipeApp.csproj",
       "packagesPath": "/Users/FahadButt/.nuget/packages/",
-      "outputPath": "/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/obj/",
+      "outputPath": "/Users/FahadButt/Desktop/git_pull/first_repo/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/FahadButt/.nuget/NuGet/NuGet.Config"

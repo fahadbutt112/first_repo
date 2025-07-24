@@ -17,61 +17,61 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MvcRecipeApp
 build_property.RootNamespace = MvcRecipeApp
-build_property.ProjectDir = /Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/
+build_property.ProjectDir = /Users/FahadButt/Desktop/git_pull/first_repo/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp
+build_property.MSBuildProjectDirectory = /Users/FahadButt/Desktop/git_pull/first_repo
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Home/Index.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Home/Privacy.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Recipes/Create.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Recipes/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVjaXBlcy9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Recipes/Delete.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Recipes/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVjaXBlcy9EZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Recipes/Details.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Recipes/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVjaXBlcy9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Recipes/Edit.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Recipes/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVjaXBlcy9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Recipes/Index.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Recipes/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVjaXBlcy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Shared/Error.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/_ViewImports.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/_ViewStart.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/FahadButt/Downloads/ASP2.net/MvcRecipeApp/Views/Shared/_Layout.cshtml]
+[/Users/FahadButt/Desktop/git_pull/first_repo/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-pwawm7nhwe

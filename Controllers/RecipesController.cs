@@ -17,7 +17,7 @@ namespace MvcRecipeApp.Controllers
                                 // to prevent any direct changes 
         }
 
-        // GET: Recipes
+        
         public async Task<IActionResult> Index(string search)
         {
             var recipes = _context.Recipes.AsQueryable();
@@ -31,7 +31,7 @@ namespace MvcRecipeApp.Controllers
             return View(await recipes.ToListAsync());
         }
 
-        // GET: Recipes/Details/5
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
