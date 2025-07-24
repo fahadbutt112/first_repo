@@ -1,0 +1,41 @@
+@model MvcRecipeApp.Models.Recipe
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Recipe</h4>
+<hr />
+<div>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <label asp-for="Title"></label><br />
+        <input asp-for="Title" /><br />
+        <span asp-validation-for="Title"></span><br /><br />
+
+        <label asp-for="Ingredients"></label><br />
+        <input asp-for="Ingredients" /><br />
+        <span asp-validation-for="Ingredients"></span><br /><br />
+
+        <label asp-for="Instructions"></label><br />
+        <input asp-for="Instructions" /><br />
+        <span asp-validation-for="Instructions"></span><br /><br />
+
+        <label asp-for="Category"></label><br />
+        <input asp-for="Category" /><br />
+        <span asp-validation-for="Category"></span><br /><br />
+
+        <input type="submit" value="Save" />
+    </form>
+</div>
+
+<br />
+<a asp-action="Index">Back to List</a>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
