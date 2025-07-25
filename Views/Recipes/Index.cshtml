@@ -19,6 +19,7 @@
     <thead>
         <tr>
             <th>#</th>
+            <th>Picture</th> <!-- ✅ New column -->
             <th>@Html.DisplayNameFor(model => model.First().Title)</th>
             <th>@Html.DisplayNameFor(model => model.First().Ingredients)</th>
             <th>@Html.DisplayNameFor(model => model.First().Instructions)</th>
@@ -30,6 +31,12 @@
     {
         <tr>
             <td>@serial</td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.Picture))
+                {
+                    <img src="@item.Picture" alt="Recipe Image" style="max-width: 80px; max-height: 80px;" />
+                }
+            </td>
             <td>@Html.DisplayFor(modelItem => item.Title)</td>
             <td>@Html.DisplayFor(modelItem => item.Ingredients)</td>
             <td>@Html.DisplayFor(modelItem => item.Instructions)</td>

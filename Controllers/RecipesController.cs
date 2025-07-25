@@ -2,22 +2,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MvcRecipeApp.Data;
 using MvcRecipeApp.Models;
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http; // ✅ required for IFormFile
+using Microsoft.AspNetCore.Hosting; // optional if using IWebHostEnvironment
 
 namespace MvcRecipeApp.Controllers
 {
     public class RecipesController : Controller
     {
-        private readonly AppDbContext _context; // 
+        private readonly AppDbContext _context;
 
         public RecipesController(AppDbContext context)
         {
-            _context = context; // assignment done because _context is read only
-                                // to prevent any direct changes 
+            _context = context;
         }
 
-        
         public async Task<IActionResult> Index(string search)
         {
             var recipes = _context.Recipes.AsQueryable();
@@ -31,7 +33,6 @@ namespace MvcRecipeApp.Controllers
             return View(await recipes.ToListAsync());
         }
 
-        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -42,27 +43,42 @@ namespace MvcRecipeApp.Controllers
             return View(recipe);
         }
 
-        // GET: Recipes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-
-        // POST: Recipes/Create
+        // ✅ MODIFIED: Recipes/Create POST to support image upload
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Recipe recipe)
+        public async Task<IActionResult> Create(Recipe recipe, IFormFile imageFile)
         {
             if (!ModelState.IsValid) return View(recipe);
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+
+                if (!Directory.Exists(imagePath))
+                    Directory.CreateDirectory(imagePath);
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var fullPath = Path.Combine(imagePath, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                recipe.Picture = "/images/" + fileName;
+            }
 
             _context.Add(recipe);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Recipes/Edit/5 invoked when pressing edit manually or from the url
-        public async Task<IActionResult> Edit(int? id) // edit a recipe
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
@@ -72,10 +88,9 @@ namespace MvcRecipeApp.Controllers
             return View(recipe);
         }
 
-        // POST: Recipes/Edit/5 go in page manually then press edit then this function will run
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Recipe recipe) // submit the edit form
+        public async Task<IActionResult> Edit(int id, Recipe recipe)
         {
             if (id != recipe.Id) return NotFound();
             if (!ModelState.IsValid) return View(recipe);
@@ -96,7 +111,6 @@ namespace MvcRecipeApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Recipes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -107,10 +121,9 @@ namespace MvcRecipeApp.Controllers
             return View(recipe);
         }
 
-        // POST: Recipes/Delete/5
-        [HttpPost, ActionName("Delete")] 
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id) 
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var recipe = await _context.Recipes.FindAsync(id);
             if (recipe != null)

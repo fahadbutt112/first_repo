@@ -15,5 +15,7 @@ namespace MvcRecipeApp.Models
 
         [Required]
         public required string Category { get; set; }
+        public string? Picture { get; set; } 
     }
-}
+    }
+       
