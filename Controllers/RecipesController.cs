@@ -6,8 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http; // ✅ required for IFormFile
-using Microsoft.AspNetCore.Hosting; // optional if using IWebHostEnvironment
+using Microsoft.AspNetCore.Http;
 
 namespace MvcRecipeApp.Controllers
 {
@@ -48,7 +47,6 @@ namespace MvcRecipeApp.Controllers
             return View();
         }
 
-        // ✅ MODIFIED: Recipes/Create POST to support image upload
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Recipe recipe, IFormFile imageFile)
@@ -90,10 +88,42 @@ namespace MvcRecipeApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Recipe recipe)
+        public async Task<IActionResult> Edit(int id, Recipe recipe, IFormFile imageFile)
         {
             if (id != recipe.Id) return NotFound();
             if (!ModelState.IsValid) return View(recipe);
+
+            var existingRecipe = await _context.Recipes.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
+            if (existingRecipe == null) return NotFound();
+
+            // Keep the existing picture unless replaced
+            recipe.Picture = existingRecipe.Picture;
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+
+                if (!Directory.Exists(imagePath))
+                    Directory.CreateDirectory(imagePath);
+
+                // Delete old image if it exists
+                if (!string.IsNullOrEmpty(existingRecipe.Picture))
+                {
+                    var oldImageFullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingRecipe.Picture.TrimStart('/'));
+                    if (System.IO.File.Exists(oldImageFullPath))
+                        System.IO.File.Delete(oldImageFullPath);
+                }
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var fullPath = Path.Combine(imagePath, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                recipe.Picture = "/images/" + fileName;
+            }
 
             try
             {
@@ -128,6 +158,14 @@ namespace MvcRecipeApp.Controllers
             var recipe = await _context.Recipes.FindAsync(id);
             if (recipe != null)
             {
+                // Optionally delete image file on deletion (optional logic)
+                if (!string.IsNullOrEmpty(recipe.Picture))
+                {
+                    var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", recipe.Picture.TrimStart('/'));
+                    if (System.IO.File.Exists(imagePath))
+                        System.IO.File.Delete(imagePath);
+                }
+
                 _context.Recipes.Remove(recipe);
                 await _context.SaveChangesAsync();
             }

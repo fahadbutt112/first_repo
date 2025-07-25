@@ -9,7 +9,7 @@
 <h4>Recipe</h4>
 <hr />
 <div>
-    <form asp-action="Edit">
+    <form asp-action="Edit" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly"></div>
         <input type="hidden" asp-for="Id" />
 
@@ -28,6 +28,15 @@
         <label asp-for="Category"></label><br />
         <input asp-for="Category" /><br />
         <span asp-validation-for="Category"></span><br /><br />
+
+        @if (!string.IsNullOrEmpty(Model.Picture))
+        {
+            <label>Current Picture:</label><br />
+            <img src="@Model.Picture" alt="Recipe Image" width="200" /><br /><br />
+        }
+
+        <label>Upload New Picture (optional):</label><br />
+        <input type="file" name="imageFile" /><br /><br />
 
         <input type="submit" value="Save" />
     </form>
