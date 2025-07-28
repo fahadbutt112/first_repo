@@ -19,44 +19,44 @@ namespace MvcRecipeApp.Controllers
             _context = context;
         }
 
-       public async Task<IActionResult> Index(string search, string sortOrder)
-    {
-        // Store the current search and sort order in ViewData for use in the view
-        ViewData["CurrentFilter"] = search;
-        ViewData["TitleSortParam"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
-        ViewData["IngredientsSortParam"] = sortOrder == "ingredients" ? "ingredients_desc" : "ingredients";
-
-            // Start the query
-         var recipes = _context.Recipes.AsQueryable();
-
-            // Apply search filtering
-        if (!string.IsNullOrWhiteSpace(search))
+        public async Task<IActionResult> Index(string search, string sortOrder)
         {
-            recipes = recipes.Where(r =>
-            r.Title.Contains(search) || r.Ingredients.Contains(search));
+            ViewData["CurrentFilter"] = search;
+            ViewData["TitleSortParam"] = sortOrder == "title" ? "title_desc" : "title";
+            ViewData["IngredientsSortParam"] = sortOrder == "ingredients" ? "ingredients_desc" : "ingredients";
+
+            var recipes = _context.Recipes.AsQueryable();
+
+            // ✅ Case-insensitive search
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var lowerSearch = search.ToLower();
+                recipes = recipes.Where(r =>
+                    r.Title.ToLower().Contains(lowerSearch) ||
+                    r.Ingredients.ToLower().Contains(lowerSearch));
+            }
+
+            switch (sortOrder)
+            {
+                case "title":
+                    recipes = recipes.OrderBy(r => r.Title);
+                    break;
+                case "title_desc":
+                    recipes = recipes.OrderByDescending(r => r.Title);
+                    break;
+                case "ingredients":
+                    recipes = recipes.OrderBy(r => r.Ingredients);
+                    break;
+                case "ingredients_desc":
+                    recipes = recipes.OrderByDescending(r => r.Ingredients);
+                    break;
+                default:
+                    recipes = recipes.OrderBy(r => r.Title);
+                    break;
+            }
+
+            return View(await recipes.AsNoTracking().ToListAsync());
         }
-
-    // Apply sorting based on sortOrder
-        switch (sortOrder)
-    {
-        case "title_desc":
-            recipes = recipes.OrderByDescending(r => r.Title);
-            break;
-        case "ingredients":
-            recipes = recipes.OrderBy(r => r.Ingredients);
-            break;
-        case "ingredients_desc":
-            recipes = recipes.OrderByDescending(r => r.Ingredients);
-            break;
-        default:
-            recipes = recipes.OrderBy(r => r.Title); // Default sort
-            break;
-    }
-
-    // Return the result to the view
-    return View(await recipes.AsNoTracking().ToListAsync());
-}
-
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -75,7 +75,7 @@ namespace MvcRecipeApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Recipe recipe, IFormFile imageFile)
+        public async Task<IActionResult> Create(Recipe recipe, IFormFile? imageFile)
         {
             if (!ModelState.IsValid) return View(recipe);
 
@@ -122,7 +122,6 @@ namespace MvcRecipeApp.Controllers
             var existingRecipe = await _context.Recipes.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
             if (existingRecipe == null) return NotFound();
 
-            // Keep the existing picture unless replaced
             recipe.Picture = existingRecipe.Picture;
 
             if (imageFile != null && imageFile.Length > 0)
@@ -132,7 +131,6 @@ namespace MvcRecipeApp.Controllers
                 if (!Directory.Exists(imagePath))
                     Directory.CreateDirectory(imagePath);
 
-                // Delete old image if it exists
                 if (!string.IsNullOrEmpty(existingRecipe.Picture))
                 {
                     var oldImageFullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingRecipe.Picture.TrimStart('/'));
@@ -184,7 +182,6 @@ namespace MvcRecipeApp.Controllers
             var recipe = await _context.Recipes.FindAsync(id);
             if (recipe != null)
             {
-                // Optionally delete image file on deletion (optional logic)
                 if (!string.IsNullOrEmpty(recipe.Picture))
                 {
                     var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", recipe.Picture.TrimStart('/'));
