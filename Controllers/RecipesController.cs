@@ -19,18 +19,44 @@ namespace MvcRecipeApp.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string search)
+       public async Task<IActionResult> Index(string search, string sortOrder)
+    {
+        // Store the current search and sort order in ViewData for use in the view
+        ViewData["CurrentFilter"] = search;
+        ViewData["TitleSortParam"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+        ViewData["IngredientsSortParam"] = sortOrder == "ingredients" ? "ingredients_desc" : "ingredients";
+
+            // Start the query
+         var recipes = _context.Recipes.AsQueryable();
+
+            // Apply search filtering
+        if (!string.IsNullOrWhiteSpace(search))
         {
-            var recipes = _context.Recipes.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                recipes = recipes.Where(r =>
-                    r.Title.Contains(search) || r.Ingredients.Contains(search));
-            }
-
-            return View(await recipes.ToListAsync());
+            recipes = recipes.Where(r =>
+            r.Title.Contains(search) || r.Ingredients.Contains(search));
         }
+
+    // Apply sorting based on sortOrder
+        switch (sortOrder)
+    {
+        case "title_desc":
+            recipes = recipes.OrderByDescending(r => r.Title);
+            break;
+        case "ingredients":
+            recipes = recipes.OrderBy(r => r.Ingredients);
+            break;
+        case "ingredients_desc":
+            recipes = recipes.OrderByDescending(r => r.Ingredients);
+            break;
+        default:
+            recipes = recipes.OrderBy(r => r.Title); // Default sort
+            break;
+    }
+
+    // Return the result to the view
+    return View(await recipes.AsNoTracking().ToListAsync());
+}
+
 
         public async Task<IActionResult> Details(int? id)
         {

@@ -3,6 +3,14 @@
 @{
     ViewData["Title"] = "Recipes";
     var serial = 1;
+
+    string currentSort = Context.Request.Query["sortOrder"];
+    string GetArrow(string columnAsc, string columnDesc)
+    {
+        return currentSort == columnAsc ? "▲"
+             : currentSort == columnDesc ? "▼"
+             : "";
+    }
 }
 
 <h1 class="mb-3">Recipes</h1>
@@ -19,9 +27,24 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Picture</th> <!-- ✅ New column -->
-            <th>@Html.DisplayNameFor(model => model.First().Title)</th>
-            <th>@Html.DisplayNameFor(model => model.First().Ingredients)</th>
+            <th>Picture</th>
+
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["TitleSortParam"]"
+                   asp-route-search="@Context.Request.Query["search"]">
+                    @Html.DisplayNameFor(model => model.First().Title) @GetArrow("", "title_desc")
+                </a>
+            </th>
+
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["IngredientsSortParam"]"
+                   asp-route-search="@Context.Request.Query["search"]">
+                    @Html.DisplayNameFor(model => model.First().Ingredients) @GetArrow("ingredients", "ingredients_desc")
+                </a>
+            </th>
+
             <th>@Html.DisplayNameFor(model => model.First().Instructions)</th>
             <th></th>
         </tr>
