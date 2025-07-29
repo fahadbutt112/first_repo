@@ -1,0 +1,75 @@
+@model IEnumerable<MvcRecipeApp.Models.Recipe>
+
+@{
+    ViewData["Title"] = "Desserts";
+    var serial = 1;
+
+    string currentSort = Context.Request.Query["sortOrder"];
+    string GetArrow(string columnAsc, string columnDesc)
+    {
+        return currentSort == columnAsc ? "▲"
+             : currentSort == columnDesc ? "▼"
+             : "";
+    }
+}
+
+<h1 class="mb-3">Desserts</h1>
+
+<form asp-controller="Recipes" asp-action="Desserts" method="get" class="mb-3">
+    <input type="text" name="search" value="@Context.Request.Query["search"]" placeholder="Search by title or ingredients" class="form-control" />
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-light border">Create New Dessert</a>
+</p>
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Picture</th>
+
+            <th>
+                <a asp-action="Desserts"
+                   asp-route-sortOrder="@ViewData["TitleSortParam"]"
+                   asp-route-search="@Context.Request.Query["search"]">
+                    @Html.DisplayNameFor(model => model.First().Title) @GetArrow("title", "title_desc")
+                </a>
+            </th>
+
+            <th>
+                <a asp-action="Desserts"
+                   asp-route-sortOrder="@ViewData["IngredientsSortParam"]"
+                   asp-route-search="@Context.Request.Query["search"]">
+                    @Html.DisplayNameFor(model => model.First().Ingredients) @GetArrow("ingredients", "ingredients_desc")
+                </a>
+            </th>
+
+            <th>@Html.DisplayNameFor(model => model.First().Instructions)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@serial</td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.Picture))
+                {
+                    <img src="@item.Picture" alt="Recipe Image" style="max-width: 80px; max-height: 80px;" />
+                }
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+            <td>@Html.DisplayFor(modelItem => item.Ingredients)</td>
+            <td>@Html.DisplayFor(modelItem => item.Instructions)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-light border">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-light border">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-light border">Delete</a>
+            </td>
+        </tr>
+        serial++;
+    }
+    </tbody>
+</table>

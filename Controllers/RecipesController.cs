@@ -58,6 +58,16 @@ namespace MvcRecipeApp.Controllers
             return View(await recipes.AsNoTracking().ToListAsync());
         }
 
+        // ✅ Desserts Action
+        public async Task<IActionResult> Desserts()
+        {
+            var desserts = await _context.Recipes
+                .Where(r => r.Category.ToLower() == "desserts")
+                .ToListAsync();
+
+            return View("Index", desserts); // Reuse Index view to display only desserts
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
