@@ -2,11 +2,12 @@
 
 @{
     ViewData["Title"] = "Create";
+    // Optional: Check if we're in a "desserts-only" context (e.g., from a "Add Dessert" button)
+    bool isDessertFlow = Context.Request.Query["category"] == "desserts";
 }
 
 <h1>Create</h1>
 
-<!-- Enable multipart form for file upload -->
 <form asp-action="Create" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly"></div>
 
@@ -16,7 +17,6 @@
         <span asp-validation-for="Title"></span>
     </div>
 
-   
     <div>
         <label asp-for="Ingredients"></label>
         <input asp-for="Ingredients" placeholder="Optional" />
@@ -29,15 +29,28 @@
         <span asp-validation-for="Instructions"></span>
     </div>
 
-
-
+    <!-- Updated: Category as dropdown -->
     <div>
         <label asp-for="Category"></label>
-        <input asp-for="Category" />
+        <select asp-for="Category" class="form-control">
+            <!-- Default to "desserts" if in dessert flow -->
+            @if (isDessertFlow)
+            {
+                <option value="desserts" selected>Dessert</option>
+            }
+            else
+            {
+                <option value="">-- Select Category --</option>
+                <option value="desserts">Dessert</option>
+                <option value="main">Main Course</option>
+                <option value="appetizer">Appetizer</option>
+                <option value="beverage">Beverage</option>
+            }
+        </select>
         <span asp-validation-for="Category"></span>
     </div>
 
-    <!-- NEW: Image upload field -->
+    <!-- Image upload field -->
     <div>
         <label>Upload Picture</label>
         <input type="file" name="imageFile" />

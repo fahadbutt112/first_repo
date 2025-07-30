@@ -33,7 +33,7 @@
                 <a asp-action="Index"
                    asp-route-sortOrder="@ViewData["TitleSortParam"]"
                    asp-route-search="@Context.Request.Query["search"]">
-                    @Html.DisplayNameFor(model => model.First().Title) @GetArrow("", "title_desc")
+                    @Html.DisplayNameFor(model => model.First().Title) @GetArrow("title", "title_desc")
                 </a>
             </th>
 
