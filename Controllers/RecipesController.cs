@@ -27,7 +27,7 @@ namespace MvcRecipeApp.Controllers
 
             var recipes = _context.Recipes.AsQueryable();
 
-            // ✅ Case-insensitive search
+            // Case-insensitive search
             if (!string.IsNullOrWhiteSpace(search))
             {
                 var lowerSearch = search.ToLower();
@@ -58,14 +58,45 @@ namespace MvcRecipeApp.Controllers
             return View(await recipes.AsNoTracking().ToListAsync());
         }
 
-        // ✅ Desserts Action
-        public async Task<IActionResult> Desserts()
+        // Enhanced Desserts Action with search and sorting
+        public async Task<IActionResult> Desserts(string search, string sortOrder)
         {
-            var desserts = await _context.Recipes
-                .Where(r => r.Category.ToLower() == "desserts")
-                .ToListAsync();
+            ViewData["CurrentFilter"] = search;
+            ViewData["TitleSortParam"] = sortOrder == "title" ? "title_desc" : "title";
+            ViewData["IngredientsSortParam"] = sortOrder == "ingredients" ? "ingredients_desc" : "ingredients";
 
-            return View("Index", desserts); // Reuse Index view to display only desserts
+            var recipes = _context.Recipes
+                .Where(r => r.Category.ToLower() == "desserts")
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var lowerSearch = search.ToLower();
+                recipes = recipes.Where(r =>
+                    r.Title.ToLower().Contains(lowerSearch) ||
+                    r.Ingredients.ToLower().Contains(lowerSearch));
+            }
+
+            switch (sortOrder)
+            {
+                case "title":
+                    recipes = recipes.OrderBy(r => r.Title);
+                    break;
+                case "title_desc":
+                    recipes = recipes.OrderByDescending(r => r.Title);
+                    break;
+                case "ingredients":
+                    recipes = recipes.OrderBy(r => r.Ingredients);
+                    break;
+                case "ingredients_desc":
+                    recipes = recipes.OrderByDescending(r => r.Ingredients);
+                    break;
+                default:
+                    recipes = recipes.OrderBy(r => r.Title);
+                    break;
+            }
+
+            return View(await recipes.AsNoTracking().ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
